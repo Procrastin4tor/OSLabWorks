@@ -58,10 +58,8 @@ void semaphoreSetStatus(int semID, int num, int status)
 
 char semaphoreLock(int semID, int num, char* semaphoreStatusArray)
 {
-    char key = semaphoreStatusArray[num];
     semaphoreSetStatus(semID, num, SEMAPHORE_LOCK);
     semaphoreStatusArray[num] = 1;
-    return key;
 }
 
 char semaphoreLockParent(int semID, int num, char* semaphoreStatusArray)
