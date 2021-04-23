@@ -89,16 +89,16 @@ void childCode(int* array, char* semaphoreStatusArray, int size, int semID)
     {
         for(int j = 0; j < size - i - 1; j++)
         {
-            semaphoreLock(semID, i, semaphoreStatusArray);
-            semaphoreLock(semID, i + 1, semaphoreStatusArray);
+            semaphoreLock(semID, j, semaphoreStatusArray);
+            semaphoreLock(semID, j + 1, semaphoreStatusArray);
             if(array[j] > array[j + 1])
             {
                 temp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = temp;
             }
-            semaphoreUnlock(semID, i, semaphoreStatusArray);
-            semaphoreUnlock(semID, i + 1, semaphoreStatusArray);
+            semaphoreUnlock(semID, j, semaphoreStatusArray);
+            semaphoreUnlock(semID, j + 1, semaphoreStatusArray);
         }
     }
     exit(0);
