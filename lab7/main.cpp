@@ -58,7 +58,7 @@ void* pthreadFunction(void* args)
 
     do
     {
-      if(!std::next_permutation(pthreadMsg.mdata, pthreadMsg.mdata + 4))
+      if(!permutationsAlgorithm(pthreadMsg.mdata, 4))
       {
         pthreadMsg.isLast = 1;
         msgsnd(msgID, &pthreadMsg, sizeof(pthreadMsg), 0);
