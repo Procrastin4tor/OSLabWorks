@@ -23,15 +23,15 @@ long fsize(FILE *fp)// определяем размер файла
 int main(int argc, char *argv[]) 
 {
   int sockfd; 
-  struct sockaddr_in servaddr; //структура данных адреса сервера
+  struct sockaddr_in servaddr; 
 
   bzero(&servaddr, sizeof(servaddr));
-  servaddr.sin_family = AF_INET;//заполнение структуры адреса сервера
+  servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons(atoi(argv[1]));
   servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
   sockfd = socket(PF_INET, SOCK_STREAM, 0);
-  if (bind(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)//настройка адреса сокета
+  if (bind(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
   {
     servaddr.sin_port = 0;
     if (bind(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
@@ -41,24 +41,24 @@ int main(int argc, char *argv[])
       exit(1);
     }
   }
-  socklen_t servlen = sizeof(servaddr); //размер структуры адреса сервера
-  listen(sockfd, 5); // установление связи через виртуальное соединение,превод сокета в пассивный режим, установление глубины очереди для соединений
-  getsockname(sockfd, (struct sockaddr *)&servaddr, &servlen); // получаем имя сокета
+  socklen_t servlen = sizeof(servaddr);
+  listen(sockfd, 5);
+  getsockname(sockfd, (struct sockaddr *)&servaddr, &servlen); 
   printf("Listening on port: %d\n", ntohs(servaddr.sin_port));
 
-  if (fork() == 0) // создаем новый процесс(обрабатываем запросы клиента)
+  if (fork() == 0)
   {
     while (1)
     {
       struct sockaddr_in cliaddr;
       socklen_t clilen = sizeof(cliaddr);
-      int newsockfd = accept(sockfd, (struct sockaddr *)&cliaddr, &clilen); //ожидаем нового клиента (получаем информацию о полностью устанволенных соединениях)
-      if (fork() == 0) // создаем новый процесс
+      int newsockfd = accept(sockfd, (struct sockaddr *)&cliaddr, &clilen); 
+      if (fork() == 0)
         continue;
-      while (1) // обрабатываем запросы нового пользователя
+      while (1) 
       {
         char filename[MAX_FILENAME_SIZE];
-        int n = read(newsockfd, filename, MAX_FILENAME_SIZE);// читаем из сокета имя файла
+        int n = read(newsockfd, filename, MAX_FILENAME_SIZE);
         {
           close(newsockfd);
           exit(0);
