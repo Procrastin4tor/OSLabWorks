@@ -69,15 +69,18 @@ int main(int argc, char *argv[])
   servaddr.sin_port = htons(atoi(sep + 1));
   sep[0] = 0;
   inet_aton(argv[1], &servaddr.sin_addr);// приводим ip в нужный формат 
+ 
   fill_random_nums((int *)sendline, n, min, max);
   print_nums((int *)sendline, n);
 
   struct timeval start, end;
   int s = sendto(sockfd, sendline, sizeof(sendline), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));// отправляем массив(отсылаем датаграмму)
+ 
   gettimeofday(&start, 0);
   recvfrom(sockfd, recvline, sizeof(recvline), 0, (struct sockaddr *)NULL, NULL);//получаем обработанный массив
   gettimeofday(&end, 0);
   print_nums((int *)recvline, n);
+  
   printf("Response time: %ldns\n", timedifference(start, end));
   close(sockfd);
 }
